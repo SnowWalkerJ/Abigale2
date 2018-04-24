@@ -43,16 +43,27 @@
                         <Icon type="stats-bars"></Icon>
                         <span>策略详情</span>
                     </MenuItem>
-                    <MenuItem name="admin" key="/admin">
+                    <MenuItem v-if="$store.getters.isAdmin" name="admin" key="/admin">
                         <Icon type="person"></Icon>
                         <span>管理员选项</span>
+                    </MenuItem>
+                    <MenuItem v-if="$store.getters.isLogin" name="logout" key="/logout">
+                        <Icon type="log-out"></Icon>
+                        <span>登出</span>
                     </MenuItem>
                 </Menu>
                 </Affix>
             </Sider>
             <Layout>
                 <div :style="{minHeight: '100vh'}">
-                    <router-view></router-view>
+                    <keep-alive v-if="this.$route.meta.keepAlive">
+                        <router-view>
+                            <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+                        </router-view>
+                    </keep-alive>
+                    <router-view v-else>
+                        <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+                    </router-view>
                 </div>
             </Layout>
         </Layout>

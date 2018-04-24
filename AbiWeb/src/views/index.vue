@@ -37,8 +37,8 @@
                     <img src="https://raw.githubusercontent.com/iview/iview/master/assets/logo.png">
                 </h1>
                 <h2>
-                    <p>Welcome to your iView app!</p>
-                    <Button type="ghost" @click="handleStart">Start iView</Button>
+                    <p>Welcome to your Abigale 2.0!</p>
+                    <Button type="ghost" @click="$router.push('/login')">Start</Button>
                 </h2>
             </Col>
         </Row>
@@ -46,13 +46,5 @@
 </template>
 <script>
     export default {
-        methods: {
-            handleStart() {
-                this.$Modal.info({
-                    title: 'Bravo',
-                    content: 'Now, enjoy the convenience of iView.'
-                });
-            }
-        }
     };
 </script>

@@ -1,40 +1,40 @@
 from apistar import Route
-from common.mongodb import MongoClient
+from common.mongodb import Database
 
 
-def name(id: str, mongo: MongoClient):
-    data = mongo.abigale.strategy.find_one({"fileId": id}, {"strategyName": 1})
-    resp = {"strategyName": data['strategyName']}
+def name(id: str, mongo: Database):
+    data = mongo.strategy.find_one({"fileId": id}, {"strategyName": 1})
+    resp = {"code": 200, "data": {"strategyName": data['strategyName']}}
     return resp
 
 
-def basic_info(id: str, mongo: MongoClient):
-    data = mongo.abigale.strategy.find_one({"fileId": id}, {"basic": 1, "_id": 0})
-    return data['basic']
+def basic_info(id: str, mongo: Database):
+    data = mongo.strategy.find_one({"fileId": id}, {"basic": 1, "_id": 0})
+    return {'code': 200, 'data': data['basic']}
 
 
-def net_values(id: str, mongo: MongoClient):
-    data = mongo.abigale.strategy.find_one({"fileId": id}, {"netValues": 1, "_id": 0})
-    return data['netValues']
+def net_values(id: str, mongo: Database):
+    data = mongo.strategy.find_one({"fileId": id}, {"netValues": 1, "_id": 0})
+    return {'code': 200, 'data': data['netValues']}
 
 
-def style_risks_keys(id: str, mongo: MongoClient):
-    data = mongo.abigale.strategy.find_one({"fileId": id}, {"styleRisks": 1, "_id": 0})
-    return list(data['styleRisks'].keys())
+def style_risks_keys(id: str, mongo: Database):
+    data = mongo.strategy.find_one({"fileId": id}, {"styleRisks": 1, "_id": 0})
+    return {'code': 200, 'data': list(data['styleRisks'].keys())}
 
 
-def style_risks(id: str, key: str, mongo: MongoClient):
-    data = mongo.abigale.strategy.find_one({"fileId": id}, {"styleRisks": 1, "_id": 0})
-    return data['styleRisks'][key]
+def style_risks(id: str, key: str, mongo: Database):
+    data = mongo.strategy.find_one({"fileId": id}, {"styleRisks": 1, "_id": 0})
+    return {'code': 200, 'data': data['styleRisks'][key]}
 
 
-def industry_risks_keys(id: str, mongo: MongoClient):
-    data = mongo.abigale.strategy.find_one({"fileId": id}, {"industryRisks": 1, "_id": 0})
-    return list(data['industryRisks'].keys())
+def industry_risks_keys(id: str, mongo: Database):
+    data = mongo.strategy.find_one({"fileId": id}, {"industryRisks": 1, "_id": 0})
+    return {'code': 200, 'data': list(data['industryRisks'].keys())}
 
-def industry_risks(id: str, key: str, mongo: MongoClient):
-    data = mongo.abigale.strategy.find_one({"fileId": id}, {"industryRisks": 1, "_id": 0})
-    return data['industryRisks'][key]
+def industry_risks(id: str, key: str, mongo: Database):
+    data = mongo.strategy.find_one({"fileId": id}, {"industryRisks": 1, "_id": 0})
+    return {'code': 200, 'data': data['industryRisks'][key]}
 
 
 detail_routes = [

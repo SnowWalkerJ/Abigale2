@@ -1,20 +1,14 @@
 from apistar.test import TestClient
-from app import app, welcome
+from apistar.http import Session
+from app import app
 
 
-def test_welcome():
-    """
-    Testing a view directly.
-    """
-    data = welcome()
-    assert data == {'message': 'Welcome to API Star!'}
-
-
-def test_http_request():
-    """
-    Testing a view, using the test client.
-    """
+def test_session():
+    from hashlib import sha256
     client = TestClient(app)
-    response = client.get('http://localhost/')
-    assert response.status_code == 200
-    assert response.json() == {'message': 'Welcome to API Star!'}
+    password = sha256('lovefei921'.encode()).hexdigest()
+    response = client.post('http://localhost/api/login', data={'username': 'snowwalkerj', 'password': password})
+    assert response.json() == {'status': 1, 'username': 'snowwalkerj', 'isAdmin': True}
+    whoami = client.get('http://localhost/api/users/whoami')
+    assert whoami.json() == {'username': 'snowwalkerj', 'isAdmin': True}
+

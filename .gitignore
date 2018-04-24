@@ -1,1 +1,4 @@
 *.log
+dist/
+index_prod.html
+.cache/

@@ -13,7 +13,7 @@ chart {
 <script>
 import VueHighcharts from 'vue2-highcharts'
 import Highstock from 'highcharts/highstock'
-import Axios from 'axios'
+import Util from '../../libs/util.js'
 
 export default {
     components: {
@@ -40,10 +40,14 @@ export default {
         },
     },
     mounted () {
-        Axios.get('http://localhost:9999/api/details/netValues?id='+this.id).then(response => {
+        Util.ajax.request({
+            method: "get",
+            url: '/api/details/netValues?id='+this.id,
+            timeout: 500
+        }).then(response => {
             this.$refs.chart.addSeries({
                 name: this.name,
-                data: response.data,
+                data: response.data.data,
                 tooltip: {
                     valueDecimals: 2
                 }

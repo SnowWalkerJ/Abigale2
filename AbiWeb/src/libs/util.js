@@ -5,19 +5,21 @@ let util = {
 
 };
 util.title = function(title) {
-    title = title ? title + ' - Home' : 'iView project';
+    title = title ? 'Abigale2 - ' + title : 'Abigale2';
     window.document.title = title;
 };
 
 const ajaxUrl = env === 'development' ?
-    'http://127.0.0.1:8888' :
+    'http://localhost:8080' :
     env === 'production' ?
-    'https://www.url.com' :
-    'https://debug.url.com';
+    'http://localhost:8080' :
+    'http://debug.url.com';
 
+axios.defaults.withCredentials = true;
 util.ajax = axios.create({
     baseURL: ajaxUrl,
-    timeout: 30000
+    timeout: 3000,
+    withCredentials: true
 });
 
 export default util;

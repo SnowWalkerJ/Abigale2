@@ -13,7 +13,7 @@
 <script>
 import VueHighcharts from 'vue2-highcharts'
 import Highstock from 'highcharts/highstock'
-import Axios from 'axios'
+import Util from '../../libs/util.js'
 
 export default {
     components: {VueHighcharts},
@@ -29,14 +29,16 @@ export default {
         click: function (name) {
             if (this.data[name]) return;
             let chart = this.$refs['chart' + name][0];
-            console.log(chart);
             chart.delegateMethod('showLoading', 'Loading...');
-            Axios.get('http://localhost:9999/api/details/' + this.field + '/query/' + name + '?id=' + this.id).then(response => {
-                this.data[name] = response.data;
+            Util.ajax.request({
+                method: "get",
+                url: '/api/details/' + this.field + '/query/' + name + '?id=' + this.id,
+                timeout: 500
+            }).then(response => {
                 chart.addSeries({
                     type: 'column',
                     name: name,
-                    data: response.data
+                    data: response.data.data
                 });
                 this.data[name] = true;
                 chart.delegateMethod("hideLoading");
@@ -61,8 +63,12 @@ export default {
         }
     },
     mounted () {
-        Axios.get('http://localhost:9999/api/details/' + this.field + '/keys').then(response => {
-            this.keys = response.data;
+        Util.ajax.request({
+            method: "get",
+            url: '/api/details/' + this.field + '/keys?id=' + this.id,
+            timeout: 500
+        }).then(response => {
+            this.keys = response.data.data;
             this.data = {};
             for (var i in this.keys) {
                 this.data[this.keys[i]] = false;

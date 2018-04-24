@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Axios from 'axios'
+import Util from '../../libs/util.js'
 export default {
     props: ['id'],
     data () {
@@ -37,6 +37,10 @@ export default {
                 {
                     title: '最大回撤',
                     key: 'mdd'
+                },
+                {
+                    title: '换手率',
+                    key: 'turnover'
                 }
             ]
         }
@@ -44,8 +48,12 @@ export default {
     methods: {
         getTableData () {
             this.loading = true;
-            Axios.get('http://localhost:9999/api/details/basic?id='+this.id).then(response => {
-                this.tableData = response.data;
+            Util.ajax.request({
+                method: "get",
+                url: '/api/details/basic?id='+this.id,
+                timeout: 500
+            }).then(response => {
+                this.tableData = response.data.data;
                 this.loading = false;
             });
         }

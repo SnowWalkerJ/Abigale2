@@ -22,9 +22,15 @@ const RouterConfig = {
 const router = new VueRouter(RouterConfig);
 
 router.beforeEach((to, from, next) => {
-    iView.LoadingBar.start();
+    
     Util.title(to.meta.title);
-    next();
+    if (to.meta.needsLogin && !store.getters.isLogin) {
+        iView.Message.warning("请登录");
+        router.push('/login');
+    } else {
+        iView.LoadingBar.start();
+        next();
+    }
 });
 
 router.afterEach(() => {
@@ -35,13 +41,29 @@ router.afterEach(() => {
 
 const store = new Vuex.Store({
     state: {
-
+        currentUser: null
     },
     getters: {
-
+        isLogin(state) {
+            return state.currentUser !== null;
+        },
+        isAdmin(state) {
+            return state.currentUser !== null && state.currentUser.isAdmin;
+        },
+        username(state) {
+            return state.currentUser.username;
+        }
     },
     mutations: {
-
+        login(state, username, isAdmin) {
+            state.currentUser = {
+                username: username,
+                isAdmin: isAdmin
+            };
+        },
+        logout(state) {
+            state.currentUser = null;
+        }
     },
     actions: {
 

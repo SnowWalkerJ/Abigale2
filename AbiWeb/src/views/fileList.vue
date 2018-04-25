@@ -22,7 +22,7 @@
 <Layout class="main">
     <Row class="toolbox">
         <Col span="12">
-            <Button class="btn-toolbox" @click="debug"><Icon type="document" size="15"/>新建策略</Button>
+            <Button class="btn-toolbox" @click="create"><Icon type="document" size="15"/>新建策略</Button>
             <Button class="btn-toolbox" @click="newFolder"><Icon type="folder" size="15"/>新建文件夹</Button>
             <Button class="btn-toolbox" @click="refresh()"><Icon type="refresh" size="15"/>刷新</Button>
         </Col>
@@ -36,6 +36,7 @@
         </Breadcrumb>
     </Row>
     <Row>
+        <new-file v-model="newModal" :path="realPath" @success="refresh"/>
         <Table border class="table" :columns="tableColumns" :data="dataToShow" @on-row-dblclick="this.enter"/>
     </Row>
 </Layout>
@@ -43,14 +44,17 @@
 
 <script>
 import Util from '../libs/util.js'
+import NewFile from './components/NewFile.vue'
 export default {
     props: {
         path: {
             type: String
         }
     },
+    components: { NewFile },
     data () {
         return {
+            newModal: false,
             nameFilter: '',
             savedPath: 'Root/',
             files: [],
@@ -64,8 +68,8 @@ export default {
             }
             return window.location.pathname + '?path=' + target;
         },
-        debug: function () {
-            console.log(this.path);
+        create: function () {
+            this.newModal = true;
         },
         enter: function (data, index) {
             if (data.type === 'folder') {
@@ -118,7 +122,7 @@ export default {
                 title: '删除文件夹',
                 content: '确认删除`' + data.name + '`?',
                 onOk: () => {
-                    Util.request({
+                    Util.ajax.request({
                         method: 'post',
                         url: '/api/files/rm_dir?path=' + data.path + '&name=' + data.name,
                         timeout: 100
@@ -138,7 +142,7 @@ export default {
                 title: '删除文件',
                 content: '确认删除`' + data.name + '`?',
                 onOk: () => {
-                    Util.request({
+                    Util.ajax.request({
                         method: 'post',
                         url: '/api/files/rm_file?path=' + data.path + '&name=' + data.name,
                         timeout: 100
@@ -230,10 +234,6 @@ export default {
                     key: 'owner',
                     sortable: true,
                     filters: this.userFilter,
-                    // filters: [{
-                    //     label: 'snowwalkerj',
-                    //     value: 'snowwalkerj'
-                    // }],
                     filterMethod (value, row) {
                         return value === row.owner;
                     }

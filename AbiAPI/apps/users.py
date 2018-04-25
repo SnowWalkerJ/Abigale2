@@ -3,6 +3,7 @@ from apistar.authentication import Auth
 from pymongo.database import Database
 from common.auth.permissions import IsLogin
 
+
 def ls(mongo: Database):
     return list(mongo.users.distinct('username'))
 

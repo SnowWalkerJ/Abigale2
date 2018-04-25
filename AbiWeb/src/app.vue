@@ -35,11 +35,15 @@
             <Sider collapsible :collapsed-width="78" v-model="isCollapsed">
                 <Affix>
                 <Menu :active-name="this.$route.name" theme="dark" width="auto" :class="menuitemClasses" @on-select="route">
-                    <MenuItem name="fileList" key="/filelist">
+                    <MenuItem v-if="!$store.getters.isLogin" name="login" key="/login">
+                        <Icon type="log-in"></Icon>
+                        <span>登录</span>
+                    </MenuItem>
+                    <MenuItem v-if="$store.getters.isLogin" name="fileList" key="/filelist">
                         <Icon type="folder"></Icon>
                         <span>文件目录</span>
                     </MenuItem>
-                    <MenuItem name="details" key="/details">
+                    <MenuItem v-if="$store.getters.isLogin" name="details" key="/details">
                         <Icon type="stats-bars"></Icon>
                         <span>策略详情</span>
                     </MenuItem>
@@ -56,13 +60,14 @@
             </Sider>
             <Layout>
                 <div :style="{minHeight: '100vh'}">
-                    <keep-alive v-if="this.$route.meta.keepAlive">
-                        <router-view>
+                    <keep-alive>
+                        <router-view v-if="$route.meta.keepAlive">
                             <!-- 这里是会被缓存的视图组件，比如 Home！ -->
                         </router-view>
                     </keep-alive>
-                    <router-view v-else>
-                        <!-- 这里是会被缓存的视图组件，比如 Home！ -->
+
+                    <router-view v-if="!$route.meta.keepAlive">
+                        <!-- 这里是不被缓存的视图组件，比如 Edit！ -->
                     </router-view>
                 </div>
             </Layout>

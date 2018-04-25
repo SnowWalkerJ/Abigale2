@@ -9,7 +9,7 @@ util.title = function(title) {
     window.document.title = title;
 };
 
-const ajaxUrl = env === 'development' ?
+util.ajaxUrl = env === 'development' ?
     'http://localhost:8080' :
     env === 'production' ?
     'http://localhost:8080' :
@@ -17,7 +17,7 @@ const ajaxUrl = env === 'development' ?
 
 axios.defaults.withCredentials = true;
 util.ajax = axios.create({
-    baseURL: ajaxUrl,
+    baseURL: util.ajaxUrl,
     timeout: 3000,
     withCredentials: true
 });

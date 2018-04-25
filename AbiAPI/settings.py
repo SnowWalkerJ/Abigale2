@@ -19,7 +19,7 @@ settings = {
     },
     "AFTER_REQUEST": [
         hooks.render_response,
-        AcceptOrigin,
+        # AcceptOrigin,
     ],
     'RENDERERS': [HTMLRenderer(), JSONRenderer()]
 }

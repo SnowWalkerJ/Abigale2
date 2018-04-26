@@ -75,6 +75,7 @@
     </div>
 </template>
 <script>
+    import Util from './libs/util'
     export default {
         data () {
             return {

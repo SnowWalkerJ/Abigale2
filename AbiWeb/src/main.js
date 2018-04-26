@@ -30,7 +30,9 @@ router.beforeEach((to, from, next) => {
             url: '/api/users/whoami',
             timeout: 1000
         }).then(response => {
-            this.$store.commit('login', response.data.data);
+            store.commit('login', response.data.data);
+            iView.LoadingBar.start();
+            next();
         }).catch(error => {
             iView.Message.warning("请登录");
             router.push('/login');

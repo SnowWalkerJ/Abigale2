@@ -1,7 +1,10 @@
 from apistar.http import RequestData, Session
+from apistar import annotate
+from apistar.renderers import JSONRenderer
 from common.mongodb import Database
 
 
+@annotate(renderers=[JSONRenderer()])
 def login(data: RequestData, mongo: Database, session: Session):
     username = data.get('username')
     password = data.get('password')
@@ -24,3 +27,13 @@ def login(data: RequestData, mongo: Database, session: Session):
             'username': user['username'],
             'isAdmin': user['isAdmin']
         }
+
+
+@annotate(renderers=[JSONRenderer()])
+def logout(session: Session):
+    try:
+        del session['username']
+        del session['isAdmin']
+    except KeyError:
+        pass
+    return {"status": 1}

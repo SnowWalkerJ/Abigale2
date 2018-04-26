@@ -1,7 +1,7 @@
-from apistar import hooks
 from apistar.renderers import HTMLRenderer, JSONRenderer
 from common.auth.auth import SessionAuthentication, TokenAuthentication, BasicAuthentication
-from common.misc import AcceptOrigin
+from apistar.hooks import render_response
+from common.hooks import handle_options
 
 
 settings = {
@@ -18,8 +18,9 @@ settings = {
         'PACKAGE_DIRS': ['apistar']  # Include the built-in apistar static files.
     },
     "AFTER_REQUEST": [
-        hooks.render_response,
+        render_response,
+        handle_options
         # AcceptOrigin,
     ],
-    'RENDERERS': [HTMLRenderer(), JSONRenderer()]
+    'RENDERERS': [JSONRenderer(), HTMLRenderer()]
 }

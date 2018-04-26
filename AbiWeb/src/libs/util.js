@@ -22,4 +22,14 @@ util.ajax = axios.create({
     withCredentials: true
 });
 
+util.handleAPI = function (this_, errMsg, onSuccess) {
+    handler = function (response) {
+        if (resposne.data.status) {
+            onSuccess(response.data);
+        } else {
+            this_.$Message.error(errMsg + ":" + response.data.msg);
+        }
+    }
+}
+
 export default util;

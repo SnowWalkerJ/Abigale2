@@ -3,7 +3,7 @@ from apistar.handlers import docs_urls, static_urls, serve_static
 from apps.details import detail_routes
 from apps.files import file_routes
 from apps.users import user_routes
-from apps.login import login
+from apps.login import login, logout
 from apps.index import index
 
 
@@ -12,6 +12,7 @@ api_routes = [
     Include('/files', file_routes),
     Include('/users', user_routes),
     Route('/login', 'POST', login),
+    Route('/logout', 'GET', logout),
 ]
 
 routes = [

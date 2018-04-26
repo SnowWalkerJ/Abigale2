@@ -47,7 +47,7 @@ def rm_dir(path: str, name: str, mongo: Database, auth: Auth):
 
 
 @annotate(permissions=[IsLogin()])
-def rm_file(path: str, name: str, mongo: Database):
+def rm_file(path: str, name: str, mongo: Database, auth: Auth):
     target = mongo.files.find_one({"path": path, "name": name})
     if not target:
         return {"status": 0, "msg": "Target doesn't exist", "code": 500}
@@ -98,10 +98,6 @@ def new_file_web(body: http.Body, mongo: Database):
     return {"status": 1, "code": 200, "fileId": file_id}
 
 
-def new_file_web_options():
-    return Response(b"")
-
-
 @annotate(permissions=[IsLogin()])
 def new_confirm(path: str, name: str, id: str, data: http.RequestData, mongo: Database, auth: Auth):
     query = {"path": path, "name": name}
@@ -119,7 +115,6 @@ file_routes = [
     Route('/ls', 'GET', ls),
     Route('/new/api', 'POST', new_file_api),
     Route('/new/web', 'POST', new_file_web),
-    Route('/new/web', 'OPTIONS', new_file_web_options),
     Route('/new/confirm', 'POST', new_confirm),
     Route('/mkdir', 'POST', mkdir),
     Route('/rm_dir', 'POST', rm_dir),

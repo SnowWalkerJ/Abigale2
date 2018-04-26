@@ -11,9 +11,9 @@ export default {
         }).then(response => {
             this.$store.commit('logout');
             this.$Message.info("登出成功");
-            this.$router.push('/');
+            this.$router.push('/login');
         }).catch(error => {
-            this.$Message.info("没有成功登出："+error.reason);
+            this.$Message.info("没有成功登出");
             this.$router.go(-1);
         });
     }

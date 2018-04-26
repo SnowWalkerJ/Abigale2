@@ -27,7 +27,7 @@
             <Button class="btn-toolbox" @click="refresh()"><Icon type="refresh" size="15"/>刷新</Button>
         </Col>
         <Col span="12">
-            <Tooltip content="支持正则表达式"><Input v-model="nameFilter" placeholder="文件名" icon="search" style="width: 300px"/></Tooltip>
+            <Tooltip content="支持正则表达式"><Input v-model="nameFilter" placeholder="根据文件名过滤" icon="search" style="width: 300px"/></Tooltip>
         </Col>
     </Row>
     <Row>
@@ -101,13 +101,14 @@ export default {
                         timeout: 100
                     }).then(response => {
                         if (response.data.status) {
-                            this.$Message.info("创建成功");
+                            this.$Message.info("创建`" + folderName + "`成功");
                             this.refresh();
                         } else {
                             this.$Message.error("创建失败：" + response.data.msg);
                         }
+                    }).catch(error => {
+                        this.$Message.error(error.response.status + error.response.data);
                     });
-                    this.$Message.info(folderName);
                 }
             });
         },
@@ -157,15 +158,57 @@ export default {
                 }
             });
         },
+        // removeFile(data) {
+        //     this.$Modal.confirm({
+        //         title: '删除文件',
+        //         content: '确认删除`' + data.name + '`?',
+        //         onOk: () => {
+        //             Util.ajax.request({
+        //                 method: 'post',
+        //                 url: '/api/files/rm_file?path=' + data.path + '&name=' + data.name,
+        //                 timeout: 100
+        //             }).then(response => {
+        //                 if (response.data.status) {
+        //                     this.$Message.info("删除成功");
+        //                     this.refresh();
+        //                 } else {
+        //                     this.$Message.error("删除失败：" + response.data.msg);
+        //                 }
+        //             });
+        //         }
+        //     });
+        // },
+        removeFile(data) {
+            this.$Modal.confirm({
+                title: '删除文件',
+                content: '确认删除`' + data.name + '`?',
+                onOk: () => {
+                    Util.ajax.request({
+                        method: 'post',
+                        url: '/api/files/rm_file?path=' + data.path + '&name=' + data.name,
+                        timeout: 100
+                    }).then(Util.handleAPI(this, "删除失败", data => {
+                        this.$Message.info("删除成功");
+                        this.refresh();
+                    }));
+                }
+            });
+        },
         refresh (path) {
             path = path === undefined ? this.realPath : path;
-            console.log("refresh");
             Util.ajax.request({
                 method: 'get',
                 url: '/api/files/ls?path=' + path,
                 timeout: 100
             }).then(response => {
-                this.files = response.data.data;
+                if (response.data.status) {
+                    this.files = response.data.data;
+                } else {
+                    this.$Message.error("刷新失败：" + response.data.msg);
+                }
+            }).catch(error => {
+                console.log(error.response.status);
+                console.log(error.response.data);
             });
         }
     },
@@ -189,9 +232,8 @@ export default {
             return filter;
         },
         dataToShow () {
-            return this.files;
-            //let regex = RegExp(this.nameFilter);
-            //return this.files.filter(val => regex.exec(val.name));
+            let regex = RegExp(this.nameFilter);
+            return this.files.filter(val => regex.exec(val.name));
         },
         tableColumns(){
             return [

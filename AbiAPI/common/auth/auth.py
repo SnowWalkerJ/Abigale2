@@ -1,3 +1,4 @@
+import base64
 from apistar.authentication import Auth, Authenticated
 from apistar.http import Session, Header, QueryParam, Header
 from common.mongodb import Database
@@ -6,7 +7,6 @@ from .users import User
 
 class SessionAuthentication:
     def authenticate(self, session: Session):
-        print(session.data)
         if 'username' in session:
             username = session['username']
             is_admin = session['isAdmin']

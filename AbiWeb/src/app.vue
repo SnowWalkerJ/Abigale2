@@ -91,13 +91,7 @@
             }
         },
         mounted() {
-            Util.ajax.request({
-                method: 'get',
-                url: '/api/users/whoami',
-                timeout: 1000
-            }).then(response => {
-                this.$store.commit('login', response.data.data);
-            }).catch(error => {});
+            
         },
         beforeDestroy() {
 

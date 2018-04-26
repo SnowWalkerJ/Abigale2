@@ -25,8 +25,16 @@ router.beforeEach((to, from, next) => {
     
     Util.title(to.meta.title);
     if (to.meta.needsLogin && !store.getters.isLogin) {
-        iView.Message.warning("请登录");
-        router.push('/login');
+        Util.ajax.request({
+            method: 'get',
+            url: '/api/users/whoami',
+            timeout: 1000
+        }).then(response => {
+            this.$store.commit('login', response.data.data);
+        }).catch(error => {
+            iView.Message.warning("请登录");
+            router.push('/login');
+        });
     } else {
         iView.LoadingBar.start();
         next();

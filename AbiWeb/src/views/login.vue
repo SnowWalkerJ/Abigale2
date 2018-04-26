@@ -72,7 +72,10 @@
                             timeout: 1000
                         }).then(response => {
                             if (response.data.status) {
-                                this.login(response.data);
+                                this.$store.commit('login', response.data.data);
+                                setTimeout(() => {
+                                    router.push('/');
+                                }, 100);
                             } else {
                                 this.$Message.error("登录失败：" + response.data.msg);
                             }
@@ -82,22 +85,6 @@
                     }
                 })
             },
-            login(data) {
-                this.$store.commit('login', data.data);
-                this.$Message.success("欢迎回来，" + data.data.username);
-                setTimeout(() => {
-                    this.$router.push('/');
-                }, 100);
-            }
-        },
-        mounted () {
-            Util.ajax.request({
-                method: 'get',
-                url: '/api/users/whoami',
-                timeout: 1000
-            }).then(response => {
-                this.login(response.data);
-            }).catch(error => {});
         }
     }
 </script>

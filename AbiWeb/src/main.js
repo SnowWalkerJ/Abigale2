@@ -57,6 +57,7 @@ const store = new Vuex.Store({
     mutations: {
         login(state, user) {
             state.currentUser = user;
+            iView.Message.success("欢迎回来，" + user.username);
         },
         logout(state) {
             state.currentUser = null;

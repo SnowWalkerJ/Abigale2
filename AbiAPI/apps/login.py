@@ -24,8 +24,10 @@ def login(data: RequestData, mongo: Database, session: Session):
         return {
             'status': 1,
             'code': 200,
-            'username': user['username'],
-            'isAdmin': user['isAdmin']
+            'data': {
+                'username': user['username'],
+                'isAdmin': user['isAdmin']
+            }
         }
 
 

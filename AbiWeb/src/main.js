@@ -55,11 +55,8 @@ const store = new Vuex.Store({
         }
     },
     mutations: {
-        login(state, username, isAdmin) {
-            state.currentUser = {
-                username: username,
-                isAdmin: isAdmin
-            };
+        login(state, user) {
+            state.currentUser = user;
         },
         logout(state) {
             state.currentUser = null;

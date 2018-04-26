@@ -83,7 +83,7 @@
                 })
             },
             login(data) {
-                this.$store.commit('login', data.data.username, data.data.isAdmin);
+                this.$store.commit('login', data.data);
                 this.$Message.success("欢迎回来，" + data.data.username);
                 setTimeout(() => {
                     this.$router.push('/');

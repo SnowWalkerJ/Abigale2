@@ -23,7 +23,10 @@
 <script>
 import Util from '../../libs/util'
 export default {
-    props: ['path', 'value'],
+    props: {
+        path: String,
+        value: Boolean
+    },
     data () {
         return {
             host: Util.ajaxUrl,
@@ -54,15 +57,10 @@ export default {
                     name: this.uploadForm.filename,
                     path: this.path
                 }
-            }).then(response => {
-                console.log(response.data);
-                if (response.data.status) {
-                    this.$Message.success("上传成功");
-                    this.$emit("success");
-                } else {
-                    this.$Message.error("上传失败:" + response.data.msg);
-                }
-            });
+            }).then(Util.handleAPI(this, "上传失败", data => {
+                this.$Message.success("上传成功");
+                this.$emit("success");
+            }));
         }
     },
     computed: {

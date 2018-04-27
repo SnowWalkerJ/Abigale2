@@ -12,7 +12,9 @@
 <script>
 import Util from '../../libs/util.js'
 export default {
-    props: ['id'],
+    props: {
+        id: String
+    },
     data () {
         return {
             loading: true,
@@ -50,7 +52,10 @@ export default {
             this.loading = true;
             Util.ajax.request({
                 method: "get",
-                url: '/api/details/basic?id='+this.id,
+                url: '/api/details/basic',
+                params: {
+                    id: this.id,
+                },
                 timeout: 500
             }).then(response => {
                 this.tableData = response.data.data;

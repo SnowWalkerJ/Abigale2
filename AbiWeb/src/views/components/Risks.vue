@@ -17,7 +17,10 @@ import Util from '../../libs/util.js'
 
 export default {
     components: {VueHighcharts},
-    props: ['field', 'id'],
+    props: {
+        field: String,
+        id: String
+    },
     data () {
         return {
             keys: [],
@@ -32,7 +35,10 @@ export default {
             chart.delegateMethod('showLoading', 'Loading...');
             Util.ajax.request({
                 method: "get",
-                url: '/api/details/' + this.field + '/query/' + name + '?id=' + this.id,
+                url: '/api/details/' + this.field + '/query/' + name,
+                params: {
+                    id: this.id,
+                },
                 timeout: 500
             }).then(response => {
                 chart.addSeries({
@@ -65,7 +71,10 @@ export default {
     mounted () {
         Util.ajax.request({
             method: "get",
-            url: '/api/details/' + this.field + '/keys?id=' + this.id,
+            url: '/api/details/' + this.field + '/keys',
+            params: {
+                id: this.id,
+            },
             timeout: 500
         }).then(response => {
             this.keys = response.data.data;

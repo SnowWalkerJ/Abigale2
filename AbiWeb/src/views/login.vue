@@ -70,16 +70,12 @@
                             url: '/api/login',
                             data: this.encryptedForm,
                             timeout: 1000
-                        }).then(response => {
-                            if (response.data.status) {
-                                this.$store.commit('login', response.data.data);
-                                setTimeout(() => {
-                                    router.push('/');
-                                }, 100);
-                            } else {
-                                this.$Message.error("登录失败：" + response.data.msg);
-                            }
-                        });
+                        }).then(Util.handleAPI(this, "登录失败", data => {
+                            this.$store.commit('login', data.data);
+                            setTimeout(() => {
+                                this.$router.push('/');
+                            }, 100);
+                        }));
                     } else {
                         this.$Message.error('登录信息不符合要求，请重新填写！');
                     }

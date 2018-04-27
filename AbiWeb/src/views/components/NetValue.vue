@@ -19,7 +19,10 @@ export default {
     components: {
         VueHighcharts
     },
-    props: ['id', 'name'],
+    props: {
+        id: String,
+        name: String
+    },
     data () {
         return {
             data: {},
@@ -42,7 +45,10 @@ export default {
     mounted () {
         Util.ajax.request({
             method: "get",
-            url: '/api/details/netValues?id='+this.id,
+            url: '/api/details/netValues',
+            params: {
+                id: this.id,
+            },
             timeout: 500
         }).then(response => {
             this.$refs.chart.addSeries({

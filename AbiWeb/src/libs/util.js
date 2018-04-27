@@ -23,13 +23,14 @@ util.ajax = axios.create({
 });
 
 util.handleAPI = function (this_, errMsg, onSuccess) {
-    handler = function (response) {
+    let handler = function (response) {
         if (resposne.data.status) {
             onSuccess(response.data);
         } else {
             this_.$Message.error(errMsg + ":" + response.data.msg);
         }
     }
+    return handler;
 }
 
 export default util;

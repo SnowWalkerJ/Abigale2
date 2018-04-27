@@ -47,9 +47,7 @@ import Util from '../libs/util.js'
 import NewFile from './components/NewFile.vue'
 export default {
     props: {
-        path: {
-            type: String
-        }
+        path: String
     },
     components: { NewFile },
     data () {
@@ -97,16 +95,16 @@ export default {
                 onOk: () => {
                     Util.ajax.request({
                         method: 'post',
-                        url: '/api/files/mkdir?path=' + this.realPath + '&name=' + folderName,
-                        timeout: 100
-                    }).then(response => {
-                        if (response.data.status) {
-                            this.$Message.info("创建`" + folderName + "`成功");
-                            this.refresh();
-                        } else {
-                            this.$Message.error("创建失败：" + response.data.msg);
-                        }
-                    }).catch(error => {
+                        url: '/api/files/mkdir',
+                        params: {
+                            path: this.realPath,
+                            name: folderName,
+                        },
+                        timeout: 500
+                    }).then(Util.handleAPI(this, "创建失败", data => {
+                        this.$Message.info("创建`" + folderName + "`成功");
+                        this.refresh();
+                    })).catch(error => {
                         this.$Message.error(error.response.status + error.response.data);
                     });
                 }
@@ -125,16 +123,16 @@ export default {
                 onOk: () => {
                     Util.ajax.request({
                         method: 'post',
-                        url: '/api/files/rm_dir?path=' + data.path + '&name=' + data.name,
-                        timeout: 100
-                    }).then(response => {
-                        if (response.data.status) {
-                            this.$Message.info("删除成功");
-                            this.refresh();
-                        } else {
-                            this.$Message.error("删除失败：" + response.data.msg);
-                        }
-                    });
+                        url: '/api/files/rm_dir',
+                        params: {
+                            path: data.path,
+                            name: data.name,
+                        },
+                        timeout: 500
+                    }).then(Util.handleAPI(this, "删除失败", data => {
+                        this.$Message.info("删除成功");
+                        this.refresh();
+                    }));
                 }
             });
         },
@@ -145,48 +143,12 @@ export default {
                 onOk: () => {
                     Util.ajax.request({
                         method: 'post',
-                        url: '/api/files/rm_file?path=' + data.path + '&name=' + data.name,
-                        timeout: 100
-                    }).then(response => {
-                        if (response.data.status) {
-                            this.$Message.info("删除成功");
-                            this.refresh();
-                        } else {
-                            this.$Message.error("删除失败：" + response.data.msg);
-                        }
-                    });
-                }
-            });
-        },
-        // removeFile(data) {
-        //     this.$Modal.confirm({
-        //         title: '删除文件',
-        //         content: '确认删除`' + data.name + '`?',
-        //         onOk: () => {
-        //             Util.ajax.request({
-        //                 method: 'post',
-        //                 url: '/api/files/rm_file?path=' + data.path + '&name=' + data.name,
-        //                 timeout: 100
-        //             }).then(response => {
-        //                 if (response.data.status) {
-        //                     this.$Message.info("删除成功");
-        //                     this.refresh();
-        //                 } else {
-        //                     this.$Message.error("删除失败：" + response.data.msg);
-        //                 }
-        //             });
-        //         }
-        //     });
-        // },
-        removeFile(data) {
-            this.$Modal.confirm({
-                title: '删除文件',
-                content: '确认删除`' + data.name + '`?',
-                onOk: () => {
-                    Util.ajax.request({
-                        method: 'post',
-                        url: '/api/files/rm_file?path=' + data.path + '&name=' + data.name,
-                        timeout: 100
+                        url: '/api/files/rm_file',
+                        params: {
+                            path: data.path,
+                            name: data.name,
+                        },
+                        timeout: 500
                     }).then(Util.handleAPI(this, "删除失败", data => {
                         this.$Message.info("删除成功");
                         this.refresh();
@@ -198,15 +160,14 @@ export default {
             path = path === undefined ? this.realPath : path;
             Util.ajax.request({
                 method: 'get',
-                url: '/api/files/ls?path=' + path,
+                url: '/api/files/ls',
+                params: {
+                    path: path,
+                },
                 timeout: 100
-            }).then(response => {
-                if (response.data.status) {
-                    this.files = response.data.data;
-                } else {
-                    this.$Message.error("刷新失败：" + response.data.msg);
-                }
-            }).catch(error => {
+            }).then(Util.handleAPI(this, "刷新失败", data => {
+                this.files = data.data;
+            })).catch(error => {
                 console.log(error.response.status);
                 console.log(error.response.data);
             });

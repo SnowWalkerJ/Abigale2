@@ -43,6 +43,14 @@
 
 <Row>
     <Col span="24">
+        <Card title="因子归隐">
+            <factor-yields :id="this.id"/>
+        </Card>
+    </Col>
+</Row>
+
+<Row>
+    <Col span="24">
         <Card title="风格暴露">
             <Risks field="styleRisks" :id="this.id"/>
         </Card>
@@ -65,6 +73,7 @@ import Util from '../libs/util'
 import BasicInfo from './components/BasicInfo.vue'
 import NetValue from './components/NetValue.vue'
 import Risks from './components/Risks.vue'
+import FactorYields from './components/FactorYields.vue'
 
 export default {
     props: ['id'],
@@ -74,7 +83,7 @@ export default {
         };
     },
     components: {
-        BasicInfo, NetValue, Risks
+        BasicInfo, NetValue, Risks, FactorYields
     },
     mounted () {
         if (this.id == undefined || this.id == null) {

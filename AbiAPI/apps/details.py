@@ -17,6 +17,10 @@ def net_values(id: str, mongo: Database):
     data = mongo.strategy.find_one({"fileId": id}, {"netValues": 1, "_id": 0})
     return {'code': 200, 'data': data['netValues']}
 
+def factor_yields(id: str, mongo: Database):
+    data = mongo.strategy.find_one({"fileId": id}, {"factorYields": 1, "_id": 0})
+    return {'code': 200, 'data': data['factorYields']}
+
 
 def style_risks_keys(id: str, mongo: Database):
     data = mongo.strategy.find_one({"fileId": id}, {"styleRisks": 1, "_id": 0})
@@ -41,6 +45,7 @@ detail_routes = [
     Route('/name', 'GET', name),
     Route('/basic', 'GET', basic_info),
     Route('/netValues', 'GET', net_values),
+    Route('/factorYields', 'GET', factor_yields),
     Route('/styleRisks/keys', 'GET', style_risks_keys),
     Route('/styleRisks/query/{key}', 'GET', style_risks),
     Route('/industryRisks/keys', 'GET', industry_risks_keys),

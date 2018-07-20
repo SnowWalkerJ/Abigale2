@@ -1,6 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const fs = require('fs');
+
+fs.open('./src/config/config.js', 'w', function(err, fd) {
+    const ajaxUrl = process.env.ALLOW_ORIGIN || "http://127.0.0.1:8080";
+    const buf = 'import Env from "./env";\nlet config = {env: Env, ajaxUrl: "' + ajaxUrl + '"};\nexport default config;';
+    console.log(buf);
+    fs.write(fd, buf, 0, buf.length, 0, function(err, written, buffer) {});
+});
 
 module.exports = {
     entry: {

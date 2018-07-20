@@ -1,5 +1,5 @@
 import axios from 'axios';
-import env from '../config/env';
+import {env, ajaxUrl} from '../config/config';
 
 let util = {
 
@@ -9,11 +9,7 @@ util.title = function(title) {
     window.document.title = title;
 };
 
-util.ajaxUrl = env === 'development' ?
-    'http://localhost:8080' :
-    env === 'production' ?
-    'http://localhost:8080' :
-    'http://debug.url.com';
+util.ajaxUrl = ajaxUrl;
 
 axios.defaults.withCredentials = true;
 util.ajax = axios.create({

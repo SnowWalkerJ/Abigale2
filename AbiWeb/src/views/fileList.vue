@@ -164,7 +164,7 @@ export default {
                 params: {
                     path: path,
                 },
-                timeout: 100
+                timeout: 800
             }).then(Util.handleAPI(this, "刷新失败", data => {
                 this.files = data.data;
             })).catch(error => {

@@ -5,3 +5,10 @@ This project is inherited from the original [Abigale](http://git.snowwalkerj.cn:
 - More detailed backtest / risk information and analysis
 - ~~No longer support multi-users~~
 - Reduce the burden of background API
+
+## Docker Installation
+
+```bash
+echo "ALLOW_ORIGIN=http://{your domain}" > .env
+docker-compose up -d
+```

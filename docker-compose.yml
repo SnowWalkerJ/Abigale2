@@ -1,0 +1,20 @@
+version: "3"
+services:
+  db:
+    image: mongo
+    restart: "always"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: mongo    # A simple password is ok since the port is never exposed
+  abigale:
+    build: .
+    depends_on:
+      - db
+    restart: "always"
+    ports:
+      - "8080:8080"
+    environment:
+      ABI_MONGO_HOST: "db"
+      ABI_MONGO_USER: "root"
+      ABI_MONGO_PASSWORD: "mongo"
+      ABI_ALLOW_ORIGIN: ${ALLOW_ORIGIN}

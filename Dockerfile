@@ -16,4 +16,5 @@ COPY --from=AbiWeb /data/index_prod.html ./web
 COPY --from=AbiWeb /data/dist ./web/dist
 RUN pip install -r requirements.txt --index-url https://pypi.douban.com/simple --trusted-host pypi.douban.com
 
-CMD ["python", "app.py", "run", "--port", "8080", "--host", "0.0.0.0"]
+# CMD ["python", "app.py", "run", "--port", "8080", "--host", "0.0.0.0"]
+CMD ["gunicorn", "app:app", "-b", "0.0.0.0:8080"]

@@ -31,6 +31,16 @@ const routers = [
         component: (resolve) => require(['./views/details.vue'], resolve)
     },
     {
+        path: '/admin/users',
+        name: 'admin-users',
+        meta: {
+            title: '管理员选项 - 用户管理',
+            needsLogin: true,
+            keepAlive: false
+        },
+        component: (resolve) => require(['./views/admin/users.vue'], resolve)
+    },
+    {
         path: '/login',
         name: 'login',
         meta: {

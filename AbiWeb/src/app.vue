@@ -47,10 +47,12 @@
                         <Icon type="stats-bars"></Icon>
                         <span>策略详情</span>
                     </MenuItem>
-                    <MenuItem v-if="$store.getters.isAdmin" name="admin" key="/admin">
-                        <Icon type="person"></Icon>
-                        <span>管理员选项</span>
-                    </MenuItem>
+                    <MenuGroup v-if="$store.getters.isAdmin" title="管理员选项">
+                        <MenuItem name="/admin/users" key="/admin/users">
+                            <Icon type="person"></Icon>
+                            <span>用户管理</span>
+                        </MenuItem>
+                    </MenuGroup>
                     <MenuItem v-if="$store.getters.isLogin" name="logout" key="/logout">
                         <Icon type="log-out"></Icon>
                         <span>登出</span>

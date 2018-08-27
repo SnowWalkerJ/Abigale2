@@ -7,7 +7,7 @@
         <FormItem label="上传文件">
             <Upload
                 type="drag"
-                :action="host + '/api/files/new/web'"
+                action="/api/files/new/web"
                 :format="['json']"
                 :on-success="uploadSuccess">
                 <div style="padding: 20px 0">
